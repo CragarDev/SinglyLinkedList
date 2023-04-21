@@ -1,5 +1,7 @@
 # ***  Singly Linked Lists
 
+print()
+
 """
 
 Objectives:
@@ -53,9 +55,9 @@ class SLList:
             new_node  # SET the list's head TO the node we created in the last step
         )
         self.length += 1
+        print(f"Added {val} to the front of the list")
         return self  # return self to allow for chaining
 
-    # This method won't require any input:
     def print_values(self):
         # We need to start at the front of our list, so let's create a pointer to our first node:
         runner = self.head  # a pointer to the list's first node
@@ -87,19 +89,30 @@ class SLList:
 
         runner.next = new_node  # increment the runner to the next node in the list
         self.length += 1
+        print(f"Added {val} to the back of the list")
         return self
 
     def search(self, val):
-        runner = self.head
+        if self.head == None:
+            return self
+
+        if self.head.value == val:
+            print(f"Found {val} in the list")
+            return True
+
+        runner = self.head.next
         while runner != None:
             if runner.value == val:
+                print(f"Found {val} in the list")
                 return True
             runner = runner.next
+        print(f"{val} is not in the list")
         return False
 
     def remove_from_front(self):
         if self.head == None:
             return self
+        print(f"Removed {self.head.value} from the front of the list")
         self.head = self.head.next
         self.length -= 1
         return self
@@ -107,12 +120,16 @@ class SLList:
     def remove_from_back(self):
         if self.head == None:
             return self
+
         if self.head.next == None:
             self.remove_from_front()
+            print(f"Removed {self.head.value} from the back of the list")
             return self
+
         runner = self.head
         while runner.next.next != None:
             runner = runner.next
+        print(f"Removed {runner.next.value} from the back of the list")
         runner.next = None
         self.length -= 1
         return self
@@ -120,12 +137,15 @@ class SLList:
     def remove_val(self, val):
         if self.head == None:
             return self
+
         if self.head.value == val:
             self.remove_from_front()
             return self
+
         runner = self.head
         while runner.next != None:
             if runner.next.value == val:
+                print(f"Removed {val} from the list")
                 runner.next = runner.next.next
                 self.length -= 1
                 return self
@@ -134,21 +154,31 @@ class SLList:
 
     def insert_at(self, val, n):
         if n > self.length:
-            print(f"ERROR: {n} is greater than the length of the list")
+            print(
+                f"ERROR: {n} is greater than the length of the list\nCan not insert {val} at index {n}\n"
+            )
+            self.add_to_back(val)
             return self
         if n == 0:
             self.add_to_front(val)
             return self
+
         if n == self.length:
             self.add_to_back(val)
             return self
+
         runner = self.head
         for i in range(1, n):
             runner = runner.next
         new_node = SLNode(val)
         new_node.next = runner.next
         runner.next = new_node
+        print(f"Inserted {val} at index {n}")
         self.length += 1
+        return self
+
+    def display_length(self):
+        print(f"There {self.length} nodes in the list")
         return self
 
 
@@ -181,30 +211,45 @@ the list's current last node needs to point to this new node.
 
 my_list = SLList()
 
-my_list.add_to_front("Jim").add_to_front("Dwight").add_to_front("Andy")
+my_list.add_to_front("Jim").add_to_front("Dwight").add_to_front("Andy").print_values()
+print()
+my_list.add_to_back("Michael").add_to_back("Pam").print_values().display_length()
+print()
+# my_list.remove_from_front().print_values().display_length()
+# print()
+# my_list.search("Dwight")
+# print()
+# my_list.search("Cragar")
+# print()
+# my_list.remove_from_back().print_values().display_length()
+# print()
+# my_list.remove_val("Dwight").print_values().display_length()
+# print()
+# my_list.remove_val("Michael").print_values().display_length()
+# print()
+# my_list.remove_val("Pam").print_values().display_length()
+# print()
+my_list.insert_at("Cragar", 8).print_values().display_length()
+print()
 
-my_list.print_values()
 
+# my_list2 = SLList()  # create a new instance of a list
+# my_list2.add_to_front("are").add_to_front("Linked lists").add_to_back(
+#     "fun!"
+# ).print_values()  # chaining, yeah!
+# # output should be:
+# # Linked lists
+# # are
+# # fun!
+# print(my_list2.search("fun!"))  # should return True
+# print(my_list.search("fun!"))  # should return False
 
-my_list2 = SLList()  # create a new instance of a list
-my_list2.add_to_front("are").add_to_front("Linked lists").add_to_back(
-    "fun!"
-).print_values()  # chaining, yeah!
-# output should be:
-# Linked lists
-# are
-# fun!
-print(my_list2.search("fun!"))  # should return True
-print(my_list.search("fun!"))  # should return False
-
-print(my_list.length)  # should print 3
-my_list.insert_at(
-    "Michael", 2
-).print_values()  # should print Jim, Dwight, Michael, Andy
-my_list.remove_from_front().print_values()  # should print Dwight, Michael, Andy
-my_list.insert_at("Pam", 2).print_values()  # should print Dwight, Michael, Andy, Pam
-my_list.remove_from_back().print_values()  # should print Dwight, Michael, Andy
-my_list.remove_val("Pam").print_values()
+# print(my_list.length)  # should print 3
+# my_list.insert_at("Michael", 2).print_values()  # should print Jim, Dwight, Michael, Andy
+# my_list.remove_from_front().print_values()  # should print Dwight, Michael, Andy
+# my_list.insert_at("Pam", 2).print_values()  # should print Dwight, Michael, Andy, Pam
+# my_list.remove_from_back().print_values()  # should print Dwight, Michael, Andy
+# my_list.remove_val("Pam").print_values()
 
 
 """
@@ -250,3 +295,9 @@ Consider the following cases:
     - n is between 0 and the length of the list
 
 """
+
+
+#
+#
+#
+print()
